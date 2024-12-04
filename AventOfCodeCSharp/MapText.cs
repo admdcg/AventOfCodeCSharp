@@ -11,10 +11,12 @@ namespace AventOfCodeCSharp
     {
         public static readonly char EMPTY = '.';
         public List<string> Lines { get; set; }
-        
+        public int Height { get; set; }
+
         public MapText(List<string> parlines)
         {
             Lines = parlines;
+            Height = Lines.Count();
         }
         public List<Line> GetLinesWhileNotEmpty(Point point)
         {
@@ -77,15 +79,23 @@ namespace AventOfCodeCSharp
         {
             return new Point(row, col, Lines[row][col]);
         }
+        public Line ReverseLine(Line line)
+        {
+            var point1 = line.Point2;
+            var point2 = line.Point1;
+            return GetLine(point1, point2);
+        }
         public Line GetLine(Point x, Point y)
         {
             var line = new Line(x, y);
-            for (int row = x.Row; row <= y.Row; row++)
-            {
-                for (int col = x.Column; col <= y.Column; col++)
-                {
-                    line.Value += Lines[row][col];
-                }
+            var incRow = x.Row == y.Row ? 0 : x.Row <= y.Row ? 1 : -1;
+            var incCol = x.Column == y.Column ? 0 : x.Column <= y.Column ? 1 : -1;
+
+            for (int row = x.Row, col = x.Column; (incRow==1 ? row <= y.Row : row >= y.Row) 
+                                               && (incCol == 1 ? col <= y.Column : col >= y.Column)
+                ; row+=incRow, col += incCol)
+            {                
+                line.Value += Lines[row][col];                
             }
             return line;
         }
@@ -174,14 +184,19 @@ namespace AventOfCodeCSharp
             }
             return adyacentes;
         }
-        private Boolean IsInBounds(int row, int col)
+        public Boolean IsInBounds(Point point)
+        {
+            return IsInBounds(point.Row, point.Column);
+
+        }
+        public Boolean IsInBounds(int row, int col)
         {
             return (row >= 0 && row < Lines.Count() && col >= 0 && col < Lines[row].Length);
             
         }
-        private Boolean IsInBounds(int row, int startCol, int len)
+        public Boolean IsInBounds(int row, int startCol, int len)
         {
             return (row >= 0 || row < Lines.Count() || startCol >= 0 || startCol < Lines[row].Length || (startCol + len) < Lines[row].Length);
-        }
+        }        
     }
 }

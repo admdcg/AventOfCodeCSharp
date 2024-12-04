@@ -10,6 +10,12 @@ namespace AdventOfCodeCSharp
 {
     public static class StringHelper
     {
+        public static string Reverse(string s)
+        {
+            char[] charArray = s.ToCharArray();
+            Array.Reverse(charArray);
+            return new string(charArray);
+        }
         public static List<T> SplitRegex<T>(this string cadena, string patronRegex)
         {
             var regex = new Regex(patronRegex);

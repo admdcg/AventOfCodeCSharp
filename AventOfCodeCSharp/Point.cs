@@ -7,7 +7,13 @@ using System.Threading.Tasks;
 namespace AventOfCodeCSharp
 {
     public class Point
-    {        
+    {
+        public Point(int row, int column)
+        {
+            Row = row;
+            Column = column;
+            Value = null;
+        }
         public Point(int row, int column, char value)
         {
             Row = row;
