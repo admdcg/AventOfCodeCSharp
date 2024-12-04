@@ -12,10 +12,10 @@ namespace AdventOfCodeCSharp
     public partial class Program
     {
         public static void Main()
-        {
-            var resultados = GetResults(2023);
-            Y2023.Program.Dia01_1(2023,1,1,true);
-            //Y2024.Program.Dia02_2();
+        {            
+            //Y2023.Program.Dia01_1(2023,1,1,true);
+            //Y2024.Program.Dia03_2(2024, 3, 2, false, false);
+            Y2023.Program.Dia03(2023, 3, 2, false, false);
         }
         public static Dictionary<int, Resultado> GetResults(int year)
         {

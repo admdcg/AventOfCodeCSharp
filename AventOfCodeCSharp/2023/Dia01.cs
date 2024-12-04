@@ -8,7 +8,7 @@ namespace AdventOfCodeCSharp.Y2023
 
     public partial class Program
     {
-        public static void Dia01_1(int year, int dia, int parte, bool test)
+        public static void Dia01_1(int year, int dia, int parte, bool test, bool other2Test = false)
         {
             string filePath = AdventOfCodeCSharp.Program.GetFilePath(year, dia, parte, test, true);
 
