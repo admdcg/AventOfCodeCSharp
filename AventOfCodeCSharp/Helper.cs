@@ -37,11 +37,7 @@ namespace AventOfCodeCSharp
         }
         public static void PrintList<T>(IEnumerable<T> lst)
         {
-
-            foreach (var c in lst)
-            {
-                Console.WriteLine((T)c);
-            }
+            Console.WriteLine(string.Join(", ", lst));
         }
     }
 }
