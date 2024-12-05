@@ -14,7 +14,7 @@ namespace AventOfCodeCSharp
             Column = column;
             Value = null;
         }
-        public Point(int row, int column, char value)
+        public Point(int row, int column, ref char value)
         {
             Row = row;
             Column = column;
@@ -23,6 +23,37 @@ namespace AventOfCodeCSharp
         public int Row { get; set; }
         public int Column { get; set; }
         public char? Value { get; set; }
-        
+        public ConsoleColor ForegroundColor { get; set; } = Console.ForegroundColor;
+        public ConsoleColor BackgroundColor { get; set; } = Console.BackgroundColor;
+        public bool IsEqual(Point point)
+        {
+            return Row == point.Row && Column == point.Column;
+        }
+        // Sobrecarga del operador +
+        public static Point operator +(Point p1, Point p2)
+        {
+            return new Point(p1.Row + p2.Row, p1.Column + p2.Column);
+        }
+        // Sobrecarga del operador ++
+        public static Point operator ++(Point p)
+        {
+            return new Point(p.Row + 1, p.Column + 1);
+        }
+        public static Point operator -(Point p1, Point p2)
+        {
+            return new Point(p1.Row - p2.Row, p1.Column - p2.Column);
+        }
+        // Sobrecarga del operador ++
+        public static Point operator --(Point p)
+        {
+            return new Point(p.Row - 1, p.Column - 1);
+        }
+
+        // Sobrecarga del método ToString para facilitar la visualización
+        public override string ToString()
+        {
+            return $"({Row},{Column}): {Value}";
+        }
+
     }
 }

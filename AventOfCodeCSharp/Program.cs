@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using AdventOfCodeCSharp;
-using AdventOfCodeCSharp;
 using AventOfCodeCSharp;
 
 namespace AdventOfCodeCSharp
@@ -15,7 +13,7 @@ namespace AdventOfCodeCSharp
         {            
             //Y2023.Program.Dia01_1(2023,1,1,true);
             //Y2024.Program.Dia03_2(2024, 3, 2, false, false);
-            Y2024.Program.Dia04(2024, 4, 2, false, false);
+            Y2019.Program.Dia10(2019, 10, 1, true, false);
         }
         public static Dictionary<int, Resultado> GetResults(int year)
         {
@@ -27,7 +25,7 @@ namespace AdventOfCodeCSharp
             var resultados = new Dictionary<int, Resultado>();
             foreach (string line in lines)
             {
-                //Console.WriteLine(line);                
+                //Console.WriteLine(line);
                 var listSplited = line.Split(':');
                 var dia = int.Parse(listSplited[0].Split(' ')[1]);
                 var results = listSplited[1].SplitNumbers();
@@ -41,9 +39,9 @@ namespace AdventOfCodeCSharp
             return resultados;
         }
         public static string GetFilePath(int year, int dia, int parte, bool test, bool other2Test = false)
-        {            
+        {
             var parteStr = other2Test ? $"-{parte}" : "";
-            var testStr = test ? "-test": "";            
+            var testStr = test ? "-test": "";
             string appDirectory = AppContext.BaseDirectory;
             string filePath = Path.Combine(appDirectory, year.ToString(), "inputs", $"Dia{dia.ToString("D2")}{parteStr}{testStr}.txt"); 
             return filePath;

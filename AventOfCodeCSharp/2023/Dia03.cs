@@ -38,7 +38,7 @@ namespace AdventOfCodeCSharp.Y2023
                 var line = lines[f];
                 foreach (Match m in regex.Matches(line))
                 {                    
-                    var adyacentes = mapText.Adyacentes(f, m.Index, m.Value.Length);
+                    var adyacentes = mapText.Adjacents(f, m.Index, m.Value.Length);
                     if (adyacentes.All(p => p.Value == '.'))
                     {
                         Console.WriteLine($"{m.Value} Incorrecto:");
