@@ -13,22 +13,22 @@ using System.Data.Common;
 using System.Runtime.InteropServices.Marshalling;
 
 
-namespace AdventOfCodeCSharp.Y2019
+namespace AdventOfCodeCSharp.Y2024
 {
     public partial class Program : Solutions
     {
-        public static void Dia10(int year, int dia, int parte, bool test, bool other2Test = false)
+        public static void Dia06(int year, int dia, int parte, bool test, bool other2Test = false)
         {
             if (parte == 1)
             {
-                Dia10_1(year, dia, parte, test, other2Test);
+                Dia06_1(year, dia, parte, test, other2Test);
             }
             else
             {
-                Dia10_2(year, dia, parte, test, other2Test);
+                Dia06_2(year, dia, parte, test, other2Test);
             }
         }
-        public static void Dia10_1(int year, int dia, int parte, bool test, bool other2Test = false)
+        public static void Dia06_1(int year, int dia, int parte, bool test, bool other2Test = false)
         {
             string filePath = AdventOfCodeCSharp.Program.GetFilePath(year, dia, parte, test, other2Test);
             //filePath = Path.Combine(AppContext.BaseDirectory, year.ToString(), "inputs", $"dia10-A.txt");
@@ -39,7 +39,7 @@ namespace AdventOfCodeCSharp.Y2019
             Console.WriteLine($"Mejor localización: {bestLocation.Item1} con {bestLocation.Item2} asteroides visibles.");
             Summary(year, dia, parte, test, bestLocation.Item2);
         }
-        public static void Dia10_2(int year, int dia, int parte, bool test, bool other2Test = false)
+        public static void Dia06_2(int year, int dia, int parte, bool test, bool other2Test = false)
         {
             string filePath = AdventOfCodeCSharp.Program.GetFilePath(year, dia, parte, test, other2Test);
             filePath = Path.Combine(AppContext.BaseDirectory, year.ToString(), "inputs", $"dia10-G-test.txt");
@@ -47,8 +47,8 @@ namespace AdventOfCodeCSharp.Y2019
             int totalSum = 0;
             var mapText = new MapText(lines);
             var asteroids = GetAsteroids(mapText);
-            var bestLocation = FindBestLocation(asteroids);            
-            
+            var bestLocation = FindBestLocation(asteroids);
+
             //var centralAsteroid = new Asteroid(mapText.GetPoint(3, 8));
             var angles = GetAngleWithAsteroids(bestLocation.Item1, asteroids);
             Console.WriteLine($"Asteriode central: {bestLocation.Item1} con {bestLocation.Item2} detectados.");
@@ -75,7 +75,7 @@ namespace AdventOfCodeCSharp.Y2019
                             killedOnRound = 0;
                             break;
                         }
-                        asteroid.Point.Value =(killedOnRound.ToString())[0];
+                        asteroid.Point.Value = (killedOnRound.ToString())[0];
                         mapText.SetCharAt(asteroid.Point.Row, asteroid.Point.Column, (char)asteroid.Point.Value);
                         angles[angle].RemoveAt(0);
                         killedAsteroids.Add(asteroid);
@@ -88,14 +88,14 @@ namespace AdventOfCodeCSharp.Y2019
                         //    }
                         //    killedOnRound = 0;
                         //}                        
-                    }                    
+                    }
                 }
-                
+
             } while (killedOnRound > 0);
             Console.WriteLine($"Asteriodes destruidos: {nKills}, en la ronda: {killedOnRound}.");
             Summary(year, dia, parte, test, totalSum);
         }
-       
+
         private static double NormalizeAngle(double angle)
         {
             angle -= (Math.PI / 2);
@@ -156,7 +156,7 @@ namespace AdventOfCodeCSharp.Y2019
 
             return angles.Count;
         }
-        private static Dictionary<double , List<Asteroid>> GetAngleWithAsteroids(Asteroid origin, List<Asteroid> asteroids)
+        private static Dictionary<double, List<Asteroid>> GetAngleWithAsteroids(Asteroid origin, List<Asteroid> asteroids)
         {
             var angles = new Dictionary<double, List<Asteroid>>();
 
@@ -167,7 +167,7 @@ namespace AdventOfCodeCSharp.Y2019
                     double angle = Math.Atan2(asteroid.Point.Row - origin.Point.Row, asteroid.Point.Column - origin.Point.Column);
                     asteroid.Distance = Point.Distance(origin.Point, asteroid.Point);
                     if (angles.ContainsKey(angle))
-                    {                        
+                    {
                         angles[angle].Add(asteroid);
                     }
                     else
@@ -178,11 +178,11 @@ namespace AdventOfCodeCSharp.Y2019
             }
             foreach (var angle in angles) //Se ordenan por distancia, los más cercanos primero
             {
-                angles[angle.Key]= angle.Value.OrderBy(a => a.Distance).ToList();
+                angles[angle.Key] = angle.Value.OrderBy(a => a.Distance).ToList();
             }
             return angles;
         }
-        
+
         private static List<Line> GetReverseLines(MapText mapText, List<Line> rectas)
         {
             var rectasInversas = new List<Line>();
@@ -223,7 +223,7 @@ namespace AdventOfCodeCSharp.Y2019
             public Asteroid(Point point) => Point = point;
             public Point Point { get; set; }
             public double Distance { get; set; }
-            public bool IsEqual(Asteroid other) 
+            public bool IsEqual(Asteroid other)
             {
                 return Point.IsEqual(other.Point);
             }
@@ -233,7 +233,8 @@ namespace AdventOfCodeCSharp.Y2019
             }
         }
 
-    }   
+    }
 }
+
 
 

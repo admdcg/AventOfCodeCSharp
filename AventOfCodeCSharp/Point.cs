@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utilities.Geometry.Euclidean;
 
 namespace AventOfCodeCSharp
 {
@@ -53,6 +54,12 @@ namespace AventOfCodeCSharp
         public override string ToString()
         {
             return $"({Row},{Column}): {Value}";
+        }
+        public static double Distance(Point p1, Point p2)
+        {
+            var dRow = p2.Row - p1.Row;
+            var dCol = p2.Column - p2.Column;
+            return Math.Sqrt(dRow * dRow + dCol * dCol);
         }
 
     }

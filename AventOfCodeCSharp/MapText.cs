@@ -382,6 +382,12 @@ namespace AventOfCodeCSharp
             }
             return lines;
         }
+        public void SetCharAt(int row, int col, char newChar)
+        {
+            var lineArray = Lines[row].ToCharArray();
+            lineArray[col] = newChar;
+            Lines[row] = new string(lineArray);
+        }
         public List<Line> GetDiagonals()
         {
             var diagonals = new List<Line>();           
