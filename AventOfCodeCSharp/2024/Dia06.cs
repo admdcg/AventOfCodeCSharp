@@ -32,68 +32,34 @@ namespace AdventOfCodeCSharp.Y2024
         {
             string filePath = AdventOfCodeCSharp.Program.GetFilePath(year, dia, parte, test, other2Test);
             //filePath = Path.Combine(AppContext.BaseDirectory, year.ToString(), "inputs", $"dia10-A.txt");
+            int totalSum = 0;
             List<string> lines = new List<string>(File.ReadAllLines(filePath));
-            var mapText = new MapText(lines);
-            var asteroids = GetAsteroids(mapText);
-            var bestLocation = FindBestLocation(asteroids);
-            Console.WriteLine($"Mejor localización: {bestLocation.Item1} con {bestLocation.Item2} asteroides visibles.");
-            Summary(year, dia, parte, test, bestLocation.Item2);
+            var laberinto = new Laberinto(lines, new Dictionary<char, TurnsType> { { Laberinto.UP, TurnsType.Right} });
+            int steps = laberinto.Walk('X');            
+            laberinto.Print();
+            totalSum = laberinto.Lines.Sum(l => l.Count(c => c == 'X'));
+            Summary(year, dia, parte, test, totalSum);
         }
         public static void Dia06_2(int year, int dia, int parte, bool test, bool other2Test = false)
         {
-            string filePath = AdventOfCodeCSharp.Program.GetFilePath(year, dia, parte, test, other2Test);
-            filePath = Path.Combine(AppContext.BaseDirectory, year.ToString(), "inputs", $"dia10-G-test.txt");
-            List<string> lines = new List<string>(File.ReadAllLines(filePath));
-            int totalSum = 0;
-            var mapText = new MapText(lines);
-            var asteroids = GetAsteroids(mapText);
-            var bestLocation = FindBestLocation(asteroids);
-
-            //var centralAsteroid = new Asteroid(mapText.GetPoint(3, 8));
-            var angles = GetAngleWithAsteroids(bestLocation.Item1, asteroids);
-            Console.WriteLine($"Asteriode central: {bestLocation.Item1} con {bestLocation.Item2} detectados.");
-            var killedOnRound = 0;
-            var nKills = 0;
-            var killedAsteroids = new List<Asteroid>();
-            do
+            try
             {
-                var orderAngels = angles.Keys.OrderBy(a => NormalizeAngle(a));
-                //var orderAngels = angles.Keys.Order();
-                foreach (var angle in orderAngels)
-                {
-                    //Console.WriteLine($"Ángulo: {angle}");
-                    if (angles[angle].Count > 0)
-                    {
-                        var asteroid = angles[angle][0];
-                        nKills++;
-                        killedOnRound++;
-                        Console.WriteLine($"Killed Asteroid: {asteroid}");
-                        if (nKills == 200)
-                        {
-                            Console.WriteLine($"200th asteroid: {asteroid}");
-                            totalSum = asteroid.Point.Row * 100 + asteroid.Point.Column;
-                            killedOnRound = 0;
-                            break;
-                        }
-                        asteroid.Point.Value = (killedOnRound.ToString())[0];
-                        mapText.SetCharAt(asteroid.Point.Row, asteroid.Point.Column, (char)asteroid.Point.Value);
-                        angles[angle].RemoveAt(0);
-                        killedAsteroids.Add(asteroid);
-                        //if (killedOnRound == 9)
-                        //{
-                        //    mapText.Print();
-                        //    foreach(var killedAsteroid in killedAsteroids)
-                        //    {
-                        //        mapText.SetCharAt(killedAsteroid.Point.Row, killedAsteroid.Point.Column, '#');
-                        //    }
-                        //    killedOnRound = 0;
-                        //}                        
-                    }
-                }
-
-            } while (killedOnRound > 0);
-            Console.WriteLine($"Asteriodes destruidos: {nKills}, en la ronda: {killedOnRound}.");
-            Summary(year, dia, parte, test, totalSum);
+                string filePath = AdventOfCodeCSharp.Program.GetFilePath(year, dia, parte, test, other2Test);
+                //filePath = Path.Combine(AppContext.BaseDirectory, year.ToString(), "inputs", $"dia10-A.txt");
+                int totalSum = 0;
+                List<string> lines = new List<string>(File.ReadAllLines(filePath));
+                var laberinto = new Laberinto(lines, new Dictionary<char, TurnsType> { { Laberinto.UP, TurnsType.Right } });
+                int steps = laberinto.Walk('X');
+                laberinto.Print();
+                totalSum = laberinto.Lines.Sum(l => l.Count(c => c == 'X'));
+                Summary(year, dia, parte, test, totalSum);
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error: "+ex.Message);                
+            }
+            
         }
 
         private static double NormalizeAngle(double angle)

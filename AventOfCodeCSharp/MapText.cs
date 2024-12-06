@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Drawing;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net.NetworkInformation;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +15,7 @@ namespace AventOfCodeCSharp
     {
         public static readonly char EMPTY = '.';
         public List<string> Lines { get; set; }
+        public char[,] Map { get; set; }
         public int Height { get; set; }
         public int Length { get; set; }
         public List<Point> Points { get; set; }
@@ -26,6 +29,7 @@ namespace AventOfCodeCSharp
             Lines = parlines;
             Height = Lines.Count();
             Length = Lines[0].Length;
+            Map = new char[Height, Length];
             Points = new List<Point>();
             FillAllPoints();
             Position = GetPoint(0, 0);
@@ -40,7 +44,14 @@ namespace AventOfCodeCSharp
                     var point = GetPoint(row, col);
                     Console.ForegroundColor = point.ForegroundColor;
                     Console.BackgroundColor = point.BackgroundColor;
-                    Console.Write(point.Value);
+                    if (point.Value == null)
+                    {
+                        Console.Write(' ');
+                    }
+                    else
+                    {
+                        Console.Write(point.Value);
+                    }                    
                     Console.ResetColor();
                 }
                 Console.WriteLine();
@@ -78,10 +89,11 @@ namespace AventOfCodeCSharp
 
         private void FillAllPoints()
         {
-            for (int row = Height - 1; row >= 0; row--)
+            for (int row = 0; row < Height; row++)
             {
-                for (int col = 0; col < Lines[row].Length - 1; col++)
+                for (int col = 0; col < Lines[row].Length; col++)
                 {
+                    Map[row, col] = Lines[row][col];
                     var point = GetPoint(row, col);
                     Points.Add(point);
                 }
@@ -151,7 +163,7 @@ namespace AventOfCodeCSharp
             {
                 throw new Exception("Puntos fuera del intervalo del mapa.");
             }
-            var ptr = Lines[row][col];
+            var ptr = Map[row, col];
             return new Point(row, col, ref ptr);
         }
         public Line ReverseLine(Line line)
@@ -384,6 +396,7 @@ namespace AventOfCodeCSharp
         }
         public void SetCharAt(int row, int col, char newChar)
         {
+            Map[row, col] = newChar;
             var lineArray = Lines[row].ToCharArray();
             lineArray[col] = newChar;
             Lines[row] = new string(lineArray);
