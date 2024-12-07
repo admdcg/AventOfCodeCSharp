@@ -29,6 +29,13 @@ namespace AdventOfCodeCSharp
                         lista.Add((T)(object)intValue);
                     }
                 }
+                else if (typeof(T) == typeof(long))
+                {
+                    if (long.TryParse(m.Value, out long intValue))
+                    {
+                        lista.Add((T)(object)intValue);
+                    }
+                }
                 else if (typeof(T) == typeof(string))
                 {
                     lista.Add((T)(object)m.Value);
@@ -36,9 +43,9 @@ namespace AdventOfCodeCSharp
             }
             return lista;
         }
-        public static List<int> SplitNumbers(this string cadena)
+        public static List<T> SplitNumbers<T>(this string cadena)
         {
-            var lista = cadena.SplitRegex<int>("\\d+");
+            var lista = cadena.SplitRegex<T>("\\d+");
             return lista;
         }
         public static List<string> SplitWords(this string cadena)

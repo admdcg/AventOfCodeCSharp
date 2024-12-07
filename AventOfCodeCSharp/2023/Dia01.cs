@@ -47,7 +47,7 @@ namespace AdventOfCodeCSharp.Y2023
             }
             var resultados = AdventOfCodeCSharp.Program.GetResults(year);
             var ok = false;
-            var resultado = -1;
+            long resultado = -1;
             if (test)
             {
                 resultado = resultados[dia].Test[parte - 1];

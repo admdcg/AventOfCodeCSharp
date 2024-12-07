@@ -13,22 +13,22 @@ namespace AdventOfCodeCSharp
         {            
             //Y2023.Program.Dia01_1(2023,1,1,true);
             //Y2024.Program.Dia03_2(2024, 3, 2, false, false);
-            Y2024.Program.Dia07(year: 2024, dia: 7, parte: 1, test: false, other2Test: false);
+            Y2024.Program.Dia07(year: 2024, dia: 7, parte: 2, test: false, other2Test: false);
         }
-        public static Dictionary<int, Resultado> GetResults(int year)
+        public static Dictionary<long, Resultado> GetResults(int year)
         {
             string appDirectory = AppContext.BaseDirectory;
             string filePath = Path.Combine(appDirectory, year.ToString(), "inputs", "Resultados.txt"); // Ruta del archivo
           
             List<string> lines = new List<string>(); // Lista para almacenar las líneas            
             lines = new List<string>(File.ReadAllLines(filePath));
-            var resultados = new Dictionary<int, Resultado>();
+            var resultados = new Dictionary<long, Resultado>();
             foreach (string line in lines)
             {
                 //Console.WriteLine(line);
                 var listSplited = line.Split(':');
-                var dia = int.Parse(listSplited[0].Split(' ')[1]);
-                var results = listSplited[1].SplitNumbers();
+                var dia = long.Parse(listSplited[0].Split(' ')[1]);
+                var results = listSplited[1].SplitNumbers<long>();
                 var resultado = new Resultado()
                 {
                     Test = [results[0], results[2]],

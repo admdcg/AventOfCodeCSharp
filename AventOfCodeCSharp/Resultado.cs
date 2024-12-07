@@ -10,10 +10,10 @@ namespace AventOfCodeCSharp
     {
         public Resultado()
         {
-            Test = new int[2];
-            Input = new int[2];
+            Test = new long[2];
+            Input = new long[2];
         }
-        public int[] Test { get; set; }
-        public int[] Input { get; set; }        
+        public long[] Test { get; set; }
+        public long[] Input { get; set; }        
     }
 }

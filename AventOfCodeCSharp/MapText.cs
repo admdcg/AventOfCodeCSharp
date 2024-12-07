@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net.NetworkInformation;
+using System.Runtime.CompilerServices;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,12 +29,45 @@ namespace AventOfCodeCSharp
             }
             Lines = parlines;
             Height = Lines.Count();
-            Length = Lines[0].Length;
+            Length = Lines.Max(l => l.Count());
             Map = new char[Height, Length];
             Points = new List<Point>();
             FillAllPoints();
             Position = GetPoint(0, 0);
         }
+        public List<string> GetRowsToListString(int fromRow, int toRow)
+        {
+            var ret = Enumerable.Range(fromRow, toRow - fromRow + 1)
+                      .Select(row => GetRow(row).Aggregate("", (acc, c) => acc + c))
+                      .ToList();                      
+            return ret;
+        }
+        public List<char> GetRow(int fila)
+        {
+            return GetRow(Map, fila);
+        }
+        public static List<char> GetRow(char[,] matriz, int fila)
+        {
+            int columnas = matriz.GetLength(1);
+            return Enumerable.Range(0, columnas)
+                             .Select(col => matriz[fila, col])
+                             .ToList();
+        }        
+        public string GetRowToString(int row)
+        {
+            return GetRow(Map, row).Aggregate("", (acc, c) => acc + c);
+        }
+        public List<char> GetColumn(int col)
+        {
+            return GetColumn(Map, col);
+        }
+        public static List<char> GetColumn(char[,] matriz, int columna)
+        {
+            int filas = matriz.GetLength(0);
+            return Enumerable.Range(0, filas)
+                             .Select(fila => matriz[fila, columna])
+                             .ToList();
+        }        
         public void Print()
         {
             Console.Clear();
@@ -286,12 +320,12 @@ namespace AventOfCodeCSharp
         }
         public Boolean IsInBounds(int row, int col)
         {
-            return (row >= 0 && row < Lines.Count() && col >= 0 && col < Lines[row].Length);
+            return (row >= 0 && row < Height && col >= 0 && col < Length);
             
         }
         public Boolean IsInBounds(int row, int startCol, int len)
         {
-            return (row >= 0 || row < Lines.Count() || startCol >= 0 || startCol < Lines[row].Length || (startCol + len) < Lines[row].Length);
+            return (row >= 0 || row < Height || startCol >= 0 || startCol < Length || (startCol + len) < Length);
         }
         public List<Line> GetRowLines()
         {
@@ -397,9 +431,6 @@ namespace AventOfCodeCSharp
         public void SetCharAt(int row, int col, char newChar)
         {
             Map[row, col] = newChar;
-            var lineArray = Lines[row].ToCharArray();
-            lineArray[col] = newChar;
-            Lines[row] = new string(lineArray);
         }
         public List<Line> GetDiagonals()
         {

@@ -74,7 +74,7 @@ namespace AdventOfCodeCSharp.Y2024
                 {
                     //Console.WriteLine(line);                
                     var numbersStr = line.Split(' ');
-                    var lista = line.SplitNumbers();
+                    var lista = line.SplitNumbers<int>();
                     if (EsSeguro(lista))
                     {
                         suma += 1;
