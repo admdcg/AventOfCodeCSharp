@@ -42,7 +42,7 @@ namespace AdventOfCodeCSharp.Y2019
         public static void Dia10_2(int year, int dia, int parte, bool test, bool other2Test = false)
         {
             string filePath = AdventOfCodeCSharp.Program.GetFilePath(year, dia, parte, test, other2Test);
-            filePath = Path.Combine(AppContext.BaseDirectory, year.ToString(), "inputs", $"dia10-G-test.txt");
+            //filePath = Path.Combine(AppContext.BaseDirectory, year.ToString(), "inputs", $"dia10-G-test.txt");
             List<string> lines = new List<string>(File.ReadAllLines(filePath));
             int totalSum = 0;
             var mapText = new MapText(lines);
@@ -67,11 +67,11 @@ namespace AdventOfCodeCSharp.Y2019
                         var asteroid = angles[angle][0];
                         nKills++;
                         killedOnRound++;
-                        Console.WriteLine($"Killed Asteroid: {asteroid}");
+                        //Console.WriteLine($"Killed Asteroid: {asteroid}");
                         if (nKills == 200)
                         {
                             Console.WriteLine($"200th asteroid: {asteroid}");
-                            totalSum = asteroid.Point.Row * 100 + asteroid.Point.Column;
+                            totalSum = asteroid.Point.Column * 100 + asteroid.Point.Row;
                             killedOnRound = 0;
                             break;
                         }

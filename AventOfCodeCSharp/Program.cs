@@ -13,7 +13,7 @@ namespace AdventOfCodeCSharp
         {            
             //Y2023.Program.Dia01_1(2023,1,1,true);
             //Y2024.Program.Dia03_2(2024, 3, 2, false, false);
-            Y2024.Program.Dia07(year: 2024, dia: 7, parte: 2, test: false, other2Test: false);
+            Y2019.Program.Dia10(year: 2019, dia: 10, parte: 2, test: false, other2Test: false);
         }
         public static Dictionary<long, Resultado> GetResults(int year)
         {
