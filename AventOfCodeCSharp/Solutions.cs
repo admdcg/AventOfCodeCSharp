@@ -8,7 +8,7 @@ namespace AventOfCodeCSharp
 {
     public class Solutions
     {
-        public static void Summary(int year, int dia, int parte, bool test, int totalSum)
+        public static void Summary(int year, int dia, int parte, bool test, long totalSum)
         {
             var resultados = AdventOfCodeCSharp.Program.GetResults(year);
             var ok = false;

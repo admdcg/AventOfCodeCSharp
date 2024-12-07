@@ -97,6 +97,12 @@
     <None Update="2024\inputs\dia06.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="2024\inputs\dia07-test.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="2024\inputs\dia07.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="2024\inputs\Resultados.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
