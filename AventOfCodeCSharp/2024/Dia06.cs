@@ -34,8 +34,8 @@ namespace AdventOfCodeCSharp.Y2024
             //filePath = Path.Combine(AppContext.BaseDirectory, year.ToString(), "inputs", $"dia10-A.txt");
             int totalSum = 0;
             List<string> lines = new List<string>(File.ReadAllLines(filePath));
-            var laberinto = new Laberinto(lines, new Dictionary<char, TurnsType> { { Laberinto.UP, TurnsType.Right} });
-            int steps = laberinto.Walk('X');            
+            var laberinto = new Laberinto(lines, new Dictionary<char, DirectionType> { { Laberinto.UP, DirectionType.Right} });
+            (int steps, bool inloop) = laberinto.Walk('X');            
             laberinto.Print();
             totalSum = laberinto.Lines.Sum(l => l.Count(c => c == 'X'));
             Summary(year, dia, parte, test, totalSum);
@@ -48,10 +48,31 @@ namespace AdventOfCodeCSharp.Y2024
                 //filePath = Path.Combine(AppContext.BaseDirectory, year.ToString(), "inputs", $"dia10-A.txt");
                 int totalSum = 0;
                 List<string> lines = new List<string>(File.ReadAllLines(filePath));
-                var laberinto = new Laberinto(lines, new Dictionary<char, TurnsType> { { Laberinto.UP, TurnsType.Right } });
-                int steps = laberinto.Walk('X');
-                laberinto.Print();
-                totalSum = laberinto.Lines.Sum(l => l.Count(c => c == 'X'));
+                var laberinto = new Laberinto(lines, new Dictionary<char, DirectionType> { { Laberinto.UP, DirectionType.Right } });
+                Console.WriteLine($"Heigth: {laberinto.Height}, Length: {laberinto.Length}");
+                for (int row = 0; row<laberinto.Height; row++)
+                {
+                    for (int col = 0; col < laberinto.Length; col++)
+                    {                        
+                        var point = laberinto.GetPoint(row, col);
+                        if (point.Value != Laberinto.WALL && !point.IsEqual(laberinto.InitPoint))
+                        {
+                            laberinto.SetCharAt(row, col, Laberinto.WALL);
+                            laberinto.Position = laberinto.InitPoint;
+                            laberinto.Direction = laberinto.InitDirection;
+                            (int steps, bool inloop) = laberinto.Walk('X');
+                            if (inloop)
+                            {                                
+                                totalSum++;
+                            }
+                            Console.WriteLine($"({row},{col}) {steps} {inloop}");
+                            //laberinto.Print();
+                            laberinto.SetCharAt(row, col, Laberinto.EMPTY);
+                            laberinto.RemoveScrumbs();
+                        }
+                    }
+                }
+                laberinto.Print();                
                 Summary(year, dia, parte, test, totalSum);
             }
             catch (Exception ex)

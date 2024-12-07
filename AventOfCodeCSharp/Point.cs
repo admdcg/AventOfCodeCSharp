@@ -15,7 +15,7 @@ namespace AventOfCodeCSharp
             Column = column;
             Value = null;
         }
-        public Point(int row, int column, ref char value)
+        public Point(int row, int column, char value)
         {
             Row = row;
             Column = column;
@@ -23,7 +23,7 @@ namespace AventOfCodeCSharp
         }
         public int Row { get; set; }
         public int Column { get; set; }
-        public char? Value { get; set; }
+        public char? Value { get; set; }        
         public ConsoleColor ForegroundColor { get; set; } = Console.ForegroundColor;
         public ConsoleColor BackgroundColor { get; set; } = Console.BackgroundColor;
         public bool IsEqual(Point point)

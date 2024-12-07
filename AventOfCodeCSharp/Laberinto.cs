@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AventOfCodeCSharp
 {
-    public enum TurnsType
+    public enum DirectionType
     {
         Up,
         Down,
@@ -24,20 +24,24 @@ namespace AventOfCodeCSharp
         public static readonly char DOWN = 'v';
         public static readonly char RIGHT = '>';
         public static readonly char LEFT = '<';
-        private static readonly Dictionary<char, TurnsType> MapTurns = new Dictionary<char, TurnsType>
+        private static readonly Dictionary<char, DirectionType> MapDirections = new Dictionary<char, DirectionType>
         {
-            { UP,  TurnsType.Up },
-            { DOWN, TurnsType.Down },
-            { RIGHT, TurnsType.Right },
-            { LEFT, TurnsType.Left }
+            { UP,  DirectionType.Up },
+            { DOWN, DirectionType.Down },
+            { RIGHT, DirectionType.Right },
+            { LEFT, DirectionType.Left }
         };
-        public Dictionary<char, TurnsType> Turns { get; set; }
+        public Dictionary<char, DirectionType> Turns { get; set; }
         public List<Point> Walls { get; set; }
         public Point InitPoint { get; set; }
-        public TurnsType Direction { get; set; }
-        public Laberinto(List<string> lines, Dictionary<char, TurnsType> turns) : base(lines)
+        public DirectionType InitDirection { get; set; }
+        public DirectionType Direction { get; set; }
+
+        public List<Scrumb> Scrumbs { get; set; }
+        public Laberinto(List<string> lines, Dictionary<char, DirectionType> turns) : base(lines)
         {
             Walls = GetWalls();
+            Scrumbs = new List<Scrumb>();
         }
         private List<Point> GetWalls()
         {
@@ -53,42 +57,45 @@ namespace AventOfCodeCSharp
                     }
                     else if (Map[row, column] == WALL)
                     {
-                        walls.Add(new Point(row, column, ref value));
+                        walls.Add(new Point(row, column, value));
                     }
                     else if (value == UP || value == DOWN || value == RIGHT || value == LEFT)
                     {
-                        base.Position = new Point(row, column, ref value);
-                        Direction = MapTurns[value];
+                        InitPoint = GetPoint(row, column);
+                        base.Position = new Point(row, column, value);
+                        Direction = MapDirections[value];
+                        InitDirection = Direction;
                         base.SetCharAt(row, column, MapText.EMPTY);
                     }
                 }
-            }           
+            }
             return walls;
         }
-        public void SetCrumb(char? crumb)
+        public Scrumb SetCrumb(char crumb)
         {
-            if (crumb != null)
-            {                
-                base.SetCharAt(Position.Row, Position.Column, (char)crumb);
-            }
-            
+            base.SetCharAt(Position.Row, Position.Column, crumb);
+            var point = new Point(Position.Row, Position.Column);
+            var scrum = new Scrumb(point.Row, point.Column, crumb, Direction);
+            Scrumbs.Add(scrum);
+            return scrum;
         }
-        public int Walk(char? crumb = null)
+        public (int, bool) Walk(char crumbChar)
         {
             int steps = 0;
-            SetCrumb(crumb);
-            for (;;)
+            Scrumb scrumb = SetCrumb(crumbChar);
+            bool inLoop = false;
+            for (; ; )
             {
-                if (Direction == TurnsType.Up)
+                if (Direction == DirectionType.Up)
                 {
                     if (base.Up())
                     {
                         if (Position.Value == WALL)
                         {
                             base.Down();
-                            Direction = TurnsType.Right;
+                            Direction = DirectionType.Right;
                         }
-                        SetCrumb(crumb);
+                        scrumb = SetCrumb(crumbChar);
                         steps++;
                     }
                     else
@@ -96,16 +103,16 @@ namespace AventOfCodeCSharp
                         break;
                     }
                 }
-                else if (Direction == TurnsType.Right)
+                else if (Direction == DirectionType.Right)
                 {
                     if (base.Right())
                     {
                         if (Position.Value == WALL)
                         {
                             base.Left();
-                            Direction = TurnsType.Down;
+                            Direction = DirectionType.Down;
                         }
-                        SetCrumb(crumb);
+                        scrumb = SetCrumb(crumbChar);
                         steps++;
                     }
                     else
@@ -113,16 +120,16 @@ namespace AventOfCodeCSharp
                         break;
                     }
                 }
-                else if (Direction == TurnsType.Down)
+                else if (Direction == DirectionType.Down)
                 {
                     if (base.Down())
                     {
                         if (Position.Value == WALL)
                         {
                             base.Up();
-                            Direction = TurnsType.Left;
+                            Direction = DirectionType.Left;
                         }
-                        SetCrumb(crumb);
+                        scrumb = SetCrumb(crumbChar);
                         steps++;
                     }
                     else
@@ -130,16 +137,16 @@ namespace AventOfCodeCSharp
                         break;
                     }
                 }
-                else if (Direction == TurnsType.Left)
+                else if (Direction == DirectionType.Left)
                 {
                     if (base.Left())
                     {
                         if (Position.Value == WALL)
                         {
                             base.Right();
-                            Direction = TurnsType.Up;
+                            Direction = DirectionType.Up;
                         }
-                        SetCrumb(crumb);
+                        scrumb = SetCrumb(crumbChar);
                         steps++;
                     }
                     else
@@ -147,10 +154,22 @@ namespace AventOfCodeCSharp
                         break;
                     }
                 }
+                if (Scrumbs.Where(s => s.IsEqual(scrumb)).Count() >= 2)
+                {
+                    inLoop = true;
+                    break;
+                }
             }
-            return steps;
+            return (steps, inLoop);
         }
-
-
+        public void RemoveScrumbs()
+        {
+            foreach (var scrumb in Scrumbs)
+            {
+                base.SetCharAt(scrumb.Row, scrumb.Column, MapText.EMPTY);
+            }
+            Scrumbs.Clear();
+        }
     }
 }
+

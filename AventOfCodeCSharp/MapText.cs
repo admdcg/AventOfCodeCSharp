@@ -164,7 +164,7 @@ namespace AventOfCodeCSharp
                 throw new Exception("Puntos fuera del intervalo del mapa.");
             }
             var ptr = Map[row, col];
-            return new Point(row, col, ref ptr);
+            return new Point(row, col, ptr);
         }
         public Line ReverseLine(Line line)
         {
